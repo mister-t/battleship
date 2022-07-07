@@ -1,3 +1,4 @@
+const { SHIPS } = require('./constants');
 const AI = require("./battleship");
 
 function describe(msg, cb) {
@@ -53,10 +54,13 @@ describe('Battleship test suite:', () => {
     } catch(errMsg) {
       expect('error message of empty ship size', errMsg).toExist();
     }
+
+    const shipInfo = ai.placeShip(SHIPS.DESTROYER);
+    expect('a ship of size 2 to be placed on the board', shipInfo).toExist();
   });
 
     // expect('a new ship to be within the board dimensions:', () => {
-    //   // ai.placeShip();
+    //   ai.placeShip(2);
     // });
 
     // expect('a new ship should not overlap a ship already placed on the board:', () => {
