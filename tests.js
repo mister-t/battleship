@@ -17,7 +17,15 @@ function expect(msg, lhs) {
         console.log(`\t\texpect ${msg} '${lhs}' to equal '${rhs}': ${lhs === rhs}`)
       } else {
         const errMsg = `${msg} '${lhs}' IS NOT EQUAL to ${rhs}`;
-        throw new Error(errMsg)
+        throw new Error(errMsg);
+      }
+    },
+    toExist: () => {
+      if (lhs) {
+        console.log(`\t\texpect ${msg} '${lhs}' TO EXIST`)
+      } else {
+        const errMsg = `\t\texpect ${msg} '${lhs}' TO NOT EXIST`;
+        throw new Error(errMsg);
       }
     }
   }
@@ -40,6 +48,23 @@ describe('Battleship test suite:', () => {
 
   test('placing a ship:', () => {
     const ai = new AI();
+    try {
+      ai.placeShip();
+    } catch(errMsg) {
+      expect('error message of empty ship size', errMsg).toExist();
+    }
+  });
 
-  })
+    // expect('a new ship to be within the board dimensions:', () => {
+    //   // ai.placeShip();
+    // });
+
+    // expect('a new ship should not overlap a ship already placed on the board:', () => {
+
+    // });
+
+    // expect('a new ship to be randomly placed the board:', () => {
+
+    // });
+  // });
 });
