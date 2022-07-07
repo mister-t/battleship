@@ -7,22 +7,18 @@ module.exports = class AI {
 
     this.WIDTH = width || INIT_WIDTH;
     this.HEIGHT = height || INIT_HEIGHT;
+
+    this.shipsAlreadyPlaced = []; //shipsAlreadyPlaced = [{ type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}]
+    this.shipsSunk = []; //shipsAlreadyPlaced = [{ type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}]
+    this.spacesAttacked= []; // attackedSpaces = [{ x1: 3, y1: 4}]
   }
 
-  placeShip({ship, boardDimensions, shipsOnBoard}) {
+  placeShip(ship) {
     //ship = {width, height}
-    //boardDimensions = {width, height}
-    //shipsOnBoard = { type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}
-
     //Need to have randomness on the placement
-
   }
 
-  bombNextLocation({boardDimensions, attackedSpaces, sunkShips}) {
-    //ship = {width, height}
-    //boardDimensions = {width, height}
-    //shipsOnBoard = { type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}
-
+  bombNextLocation({}) {
     //Need to have randomness on the bomb location
   }
 

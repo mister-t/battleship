@@ -1,7 +1,5 @@
 const AI = require("./battleship");
 
-const ai = new AI();
-
 function describe(msg, cb) {
   console.log(`${msg}`);
   cb();
@@ -26,10 +24,15 @@ function expect(msg, lhs) {
 };
 
 describe('Battleship test suite:', () => {
-  test('board dimensions ', () => {
+  test('board dimensions:', () => {
+    const ai = new AI();
     const [ width, height ] = ai.getBoardDimensions();
     expect('default board width', width).toEqual(10);
     expect('default board height', height).toEqual(10);
+  });
 
+  test('placing a ship:', () => {
+    const ai = new AI();
+    
   })
 });
