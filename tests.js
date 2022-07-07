@@ -31,8 +31,15 @@ describe('Battleship test suite:', () => {
     expect('default board height', height).toEqual(10);
   });
 
+  test('overriding board dimensions:', () => {
+    const ai = new AI({width: 20, height: 20});
+    const [ width, height ] = ai.getBoardDimensions();
+    expect('default board width', width).toEqual(20);
+    expect('default board height', height).toEqual(20);
+  });
+
   test('placing a ship:', () => {
     const ai = new AI();
-    
+
   })
 });

@@ -22,7 +22,6 @@ module.exports = class AI {
     //Need to have randomness on the bomb location
   }
 
-
   getBoardDimensions() {
     return [this.WIDTH, this.HEIGHT];
   }
