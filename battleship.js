@@ -18,44 +18,59 @@ module.exports = class AI {
     if (!shipInfo) throw new Error('can not determine boundary conditions: shipInfo missing');
     // console.log(shipInfo)
     const { x1, x2, y1, y2 } = shipInfo;
-    if (x1 >= 0 && x2 >= 0 && x1 <= this.WIDTH && x2 <= this.WIDTH && y1 >= 0 && y2 >= 0 && y1 <= this.HEIGHT && y2 <= this.HEIGHT) {
+    if (x1 >= 1 && x2 >= 1 && x1 <= this.WIDTH && x2 <= this.WIDTH && y1 >= 1 && y2 >= 1 && y1 <= this.HEIGHT && y2 <= this.HEIGHT) {
       return true;
     }
     return false;
   }
 
   placeShip({name, size}) {
-    if (!size || !name) throw new Error('Unable to place ship: size not specified')
+    if (!size || !name) throw new Error('Unable to place ship: name or size not specified')
+
     let areValidCoors = false;
-    let coordinates = null;
+    const shipsAlreadyPlaced = this.getShipsAlreadyPlaced();
+    let x1 = getRandomValue(this.WIDTH);
+    let x2 = getRandomValue(this.WIDTH);
+    let y1 = getRandomValue(this.HEIGHT);
+    let y2 = getRandomValue(this.HEIGHT);
 
     while(!areValidCoors) {
-      let x1 = getRandomValue(this.WIDTH);
-      let x2 = getRandomValue(this.WIDTH);
-      let y1 = getRandomValue(this.HEIGHT);
-      let y2 = getRandomValue(this.HEIGHT);
-
       //constrict the size of the ship to that of the ship type
       if (isVertical(x1, x2)) {
         y2 = y1 + size;
       }
       else if (isHorizontal(y1, y2)) {
         x2 = x1 + size;
+      } else {
+        x1 = getRandomValue(this.WIDTH);
+        x2 = getRandomValue(this.WIDTH);
+        y1 = getRandomValue(this.HEIGHT);
+        y2 = getRandomValue(this.HEIGHT);
+        continue;
       }
 
-      if (this.isWithinBounds({x1, x2, y1, y2}) && 
-          isOrientedProperly({x1, x2, y1, y2}) &&
-          !isOverlapped({x1, x2, y1, y2, shipsAlreadyPlaced: this.shipsAlreadyPlaced})) {
-        coordinates = {type: name, x1, y1, x2, y2};
-        this.shipsAlreadyPlaced.push(coordinates);
+      if (!this.isWithinBounds({x1, x2, y1, y2}) && 
+          !isOrientedProperly({x1, x2, y1, y2}) && 
+          isOverlapped({x1, x2, y1, y2, shipsAlreadyPlaced: this.shipsAlreadyPlaced})) { 
+      } else {
         areValidCoors = true;
       }
-
-      if (areValidCoors) return coordinates;
     }
-    return null;
+    return  {type: name, x1, x2, y1, y2};
+  }
+
+  ship({name, size}) {
+    let shipInfo = this.placeShip({name, size});
+    this.recordShipsPlaced(shipInfo)
+    return shipInfo
   }
  
+  recordShipsPlaced(shipInfo) {
+    const {type, x1, x2, y1, y2} = shipInfo;
+    if (!x1 || !x2 || !y1 || !y2 || !type) throw new Error('Unable to record new ship coordinates: missing x or y coordinates or ship type');
+    this.shipsAlreadyPlaced.push(shipInfo);
+  }
+
   getNewBombCoors() {
     while(true) {
       let x = getRandomValue(this.WIDTH);
@@ -101,5 +116,9 @@ module.exports = class AI {
 
   getNumShipsPlaced() {
     return this.shipsAlreadyPlaced.length;
+  }
+
+  getShipsAlreadyPlaced() {
+    return this.shipsAlreadyPlaced;
   }
 }

@@ -65,9 +65,10 @@ describe('Battleship test suite:', () => {
     }
 
     const [ width, height ] = ai.getBoardDimensions();
-    let shipInfo = ai.placeShip(SHIPS.DESTROYER);
+    let shipInfo = ai.ship(SHIPS.DESTROYER);
     const { type, x1, x2, y1, y2 } = shipInfo;
-    let testShipSize = x1 === x2 ? y2 - y1 : x2 - x1;
+    let testShipSize = isVertical(x1, x2) ? y2 - y1 : x2 - x1;
+    console.log('destroyer ship info: ', shipInfo)
     expect(`a ${SHIPS.DESTROYER.name} of size`, SHIPS.DESTROYER.size).toEqual(testShipSize);
     expect(`the list of ships already placed to have a size of `, 1).toEqual(1);
 
@@ -76,7 +77,7 @@ describe('Battleship test suite:', () => {
     expect(`the x2 coordinate '${x2}' of the ship to be between 1 and the board width of ${width}`, x2 >= 1 && x2<= width).toEqual(true);
     expect(`the y2 coordinate '${y2}' of the ship to be between 1 and the board height of ${height}`, y2 >= 1 && y2 <= height).toEqual(true);
 
-    shipInfo = ai.placeShip(SHIPS.CARRIER);
+    shipInfo = ai.ship(SHIPS.CARRIER);
     const { type:carrierType, x1:carrierX1, x2:carrierX2, y1:carrierY1, y2:carrierY2 } = shipInfo;
     testShipSize = carrierX1 === carrierX2 ? carrierY2 - carrierY1 : carrierX2 - carrierX1;
     const numShips = ai.getNumShipsPlaced();
@@ -85,9 +86,12 @@ describe('Battleship test suite:', () => {
     expect(`the list of ships already placed to have a size of`, numShips).toEqual(2);
 
     expect(`a ship (with coordinates 'x1=${x1}','x2=${x2}','y1=${y1}','y2=${y2}') to be placed on the board either horizontal or vertical on the board`, isHorizontal(y1, y2) || isVertical(x1, x2)).toEqual(true);
-    // expect('ships to not overlap a ship already placed on the board:', () => {
 
-    // });
+    shipInfo = ai.placeShip(SHIPS.SUBMARINE);
+    const shipsAlreadyPlaced = ai.getShipsAlreadyPlaced();
+    const { type:submarineType, x1:submarineX1, x2:submarineX2, y1:submarineY1, y2:submarineY2 } = shipInfo;
+
+    expect(`a ship of type '${submarineType}' (with coordinates 'X1=${submarineX1}','X2=${submarineX2}','Y1=${submarineY1}','Y2=${submarineY2}') to not overlap other ships already on the board`, !isOverlapped({x1: submarineX1, x2: submarineX2, y1: submarineY1, y2: submarineY1, shipsAlreadyPlaced}) ).toEqual(true);
   });
 
   test('placing the next bomb:', () => {
