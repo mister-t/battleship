@@ -1,5 +1,5 @@
 const { INIT_HEIGHT, INIT_WIDTH } = require('./constants');
-const { getRandomValue, isVertical, isHorizontal, isOrientedProperly, isOverlapped, isSpaceTaken, isWithinBounds} = require('./utils');
+const { getRandomValue, isVertical, isHorizontal, isOrientedProperly, isOverlapped, isSpaceTaken, getNewShipCoors, areBadCoors } = require('./utils');
 
 module.exports = class AI {
   constructor(opts) {
@@ -18,10 +18,8 @@ module.exports = class AI {
 
     let areValidCoors = false;
     const shipsAlreadyPlaced = this.getShipsAlreadyPlaced();
-    let x1 = getRandomValue(this.WIDTH);
-    let x2 = getRandomValue(this.WIDTH);
-    let y1 = getRandomValue(this.HEIGHT);
-    let y2 = getRandomValue(this.HEIGHT);
+    const { WIDTH, HEIGHT } = this;
+    let { x1, x2, y1, y2 } = getNewShipCoors({WIDTH, HEIGHT});
 
     while(!areValidCoors) {
       //constrict the size of the ship to that of the ship type
@@ -32,13 +30,12 @@ module.exports = class AI {
         x2 = x1 + size;
       }
 
-      if (!isWithinBounds({x1, x2, y1, y2}, this.WIDTH, this.HEIGHT) ||
-          !isOrientedProperly({x1, x2, y1, y2}) ||
-          isOverlapped({x1, x2, y1, y2, shipsAlreadyPlaced: this.shipsAlreadyPlaced})) { 
-        x1 = getRandomValue(this.WIDTH);
-        x2 = getRandomValue(this.WIDTH);
-        y1 = getRandomValue(this.HEIGHT);
-        y2 = getRandomValue(this.HEIGHT);
+      if (areBadCoors({x1, x2, y1, y2, WIDTH, HEIGHT, shipsAlreadyPlaced})) {
+        let newCoors = getNewShipCoors({WIDTH, HEIGHT});
+        x1 = newCoors.x1;
+        x2 = newCoors.x2;
+        y1 = newCoors.y1;
+        y2 = newCoors.y2;
       } else {
         areValidCoors = true;
       }

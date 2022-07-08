@@ -40,12 +40,29 @@ const isOrientedProperly = ({x1, x2, y1, y2}) => {
   return false;
 };
 
+const getNewShipCoors = ({WIDTH, HEIGHT}) => {
+    const x1 = getRandomValue(WIDTH);
+    const x2 = getRandomValue(WIDTH);
+    const y1 = getRandomValue(HEIGHT);
+    const y2 = getRandomValue(HEIGHT);
+    return {x1, x2, y1, y2};
+};
+
+const areBadCoors = ({x1, x2, y1, y2, WIDTH, HEIGHT, shipsAlreadyPlaced}) => {
+  if (!x1 || !x2 || !y1 || !y2 || !WIDTH || !HEIGHT || !shipsAlreadyPlaced) throw new Error('Missing parameters: unable to determine coordinates');
+  return !isWithinBounds({x1, x2, y1, y2}, WIDTH, HEIGHT) ||
+      !isOrientedProperly({x1, x2, y1, y2}) ||
+      isOverlapped({x1, x2, y1, y2, shipsAlreadyPlaced});
+};
+
 module.exports = {
   getRandomValue,
+  getNewShipCoors,
   isOverlapped,
   isVertical,
   isHorizontal,
   isOrientedProperly,
   isSpaceTaken,
-  isWithinBounds
+  isWithinBounds,
+  areBadCoors 
 }
