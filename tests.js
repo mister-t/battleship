@@ -1,5 +1,5 @@
 const { SHIPS } = require('./constants');
-const AI = require("./battleship");
+const AI = require('./battleship');
 
 const showGreenMsg = log => console.log("\u001b[32m" + log + "\u001b[0m");
 const showRedMsg = log => console.log("\u001b[31m" + log + "\u001b[0m");
@@ -78,7 +78,7 @@ describe('Battleship test suite:', () => {
     expect(`the list of ships already placed to have a size of`, numShips).toEqual(2);
   });
 
-    // expect('a new ship should not overlap a ship already placed on the board:', () => {
+    expect('a new ship should not overlap a ship already placed on the board:', () => {
 
-    // });
+    });
 });
