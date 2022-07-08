@@ -84,7 +84,7 @@ describe('Battleship test suite:', () => {
     expect(`a '${SHIPS.CARRIER.name}' of size`, SHIPS.CARRIER.size).toEqual(testShipSize);
     expect(`the list of ships already placed to have a size of`, numShips).toEqual(2);
 
-    expect(`a ship (with coordinates 'x1=${x1}','x2=${x2}','y1=${y1}','y2${y2}') to be placed on the board either horizontal or vertical on the board`, isHorizontal(y1, y2) || isVertical(x1, x2)).toEqual(true);
+    expect(`a ship (with coordinates 'x1=${x1}','x2=${x2}','y1=${y1}','y2=${y2}') to be placed on the board either horizontal or vertical on the board`, isHorizontal(y1, y2) || isVertical(x1, x2)).toEqual(true);
     // expect('ships to not overlap a ship already placed on the board:', () => {
 
     // });
