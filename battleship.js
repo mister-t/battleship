@@ -81,7 +81,6 @@ module.exports = class AI {
       if (areValidCoors) return coordinates;
     }
     return null;
-    //3. place a ship within the board that does not overlap with existing ships
   }
 
   bombNextLocation({}) {
