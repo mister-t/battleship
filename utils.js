@@ -4,6 +4,8 @@ const isVertical = (x1, x2) => x1 === x2;
 const isHorizontal = (y1, y2) => y1 === y2;
 const isWithin = (start, end, val) => val >= start && val <= end;
 
+const isSpaceTaken = (coordinates, spaces) => spaces.some(space =>  space.x === coordinates.x && space.y === coordinates.y);
+
 const isOverlapped = ({x1, x2, y1, y2, shipsAlreadyPlaced}) => {
   for (let ship of shipsAlreadyPlaced) {
     const { x1:shipX1, x2:shipX2, y1:shipY1, y2:shipY2 } = ship;
@@ -32,5 +34,6 @@ module.exports = {
   isOverlapped,
   isVertical,
   isHorizontal,
-  isOrientedProperly 
+  isOrientedProperly,
+  isSpaceTaken
 }

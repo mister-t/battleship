@@ -1,6 +1,6 @@
 const { SHIPS } = require('./constants');
 const AI = require('./battleship');
-const { isOverlapped } = require('./utils');
+const { isOverlapped, isSpaceTaken } = require('./utils');
 
 const showGreenMsg = log => console.log("\u001b[32m" + log + "\u001b[0m");
 const showRedMsg = log => console.log("\u001b[31m" + log + "\u001b[0m");
@@ -85,11 +85,22 @@ describe('Battleship test suite:', () => {
 
   test('placing the next bomb:', () => {
     const ai = new AI();
-    let bombInfo = ai.bombNextLocation();
+    let bombInfo = ai.placeBomb();
     const [ width, height ] = ai.getBoardDimensions();
     const { x, y } = bombInfo;
+    ai.recordPlaceAttacked(bombInfo);
 
-    expect(`the x coordinate '${x}' of the bomb to be between 1 and the board width`, x >= 1 && x <= width).toEqual(true);
-    expect(`the y coordinate '${y}' of the bomb to be between 1 and the board width`, y >= 1 && y <= height).toEqual(true);
+    expect(`the x coordinate '${x}' of the bomb to be between 1 and the board width of ${width}`, x >= 1 && x <= width).toEqual(true);
+    expect(`the y coordinate '${y}' of the bomb to be between 1 and the board height of ${height}`, y >= 1 && y <= height).toEqual(true);
+
+    //add more random attacked places
+    ai.recordPlaceAttacked(ai.placeBomb());
+    ai.recordPlaceAttacked(ai.placeBomb());
+    ai.recordPlaceAttacked(ai.placeBomb());
+    ai.recordPlaceAttacked(ai.placeBomb());
+
+    const { x:x2, y:y2 } = ai.placeBomb();
+    console.log(ai.getSpacesAttacked())
+    expect(`the x, y coordinates of '${x2}, ${y2}' to not be attacked already`, !isSpaceTaken({x2, y2}, ai.getSpacesAttacked())).toEqual(true);
   });
 });

@@ -1,5 +1,5 @@
 const { INIT_HEIGHT, INIT_WIDTH } = require('./constants');
-const { getRandomValue, isVertical, isHorizontal, isOrientedProperly, isOverlapped } = require('./utils');
+const { getRandomValue, isVertical, isHorizontal, isOrientedProperly, isOverlapped, isSpaceTaken} = require('./utils');
 
 module.exports = class AI {
   constructor(opts) {
@@ -55,23 +55,40 @@ module.exports = class AI {
     }
     return null;
   }
-
-  bombNextLocation() {
-    let areValidCoors = false;
-    let coordinates = null;
-
-    while(!areValidCoors) {
+ 
+  getNewBombCoors() {
+    while(true) {
       let x = getRandomValue(this.WIDTH);
       let y = getRandomValue(this.HEIGHT);
 
       if (x >= 1 && x <= this.WIDTH && y >= 1 && y <= this.HEIGHT) {
-        coordinates = { x, y};
-        areValidCoors = true;
+        return {x, y};
       }
-      if (areValidCoors) return coordinates;
     }
   }
 
+  recordPlaceAttacked(coors) {
+    const {x, y} = coors;
+    if (!x || !y) throw new Error('Unable to record new bomb coordinates: missing x or y coordinate');
+    this.getSpacesAttacked().push(coors);
+  }
+
+  placeBomb() {
+    let found = false;
+    let coors = this.getNewBombCoors();
+    while(!found) {
+      if (isSpaceTaken(coors, this.getSpacesAttacked())) {
+        coors = this.getNewBombCoors();
+      } else {
+        found = true;
+      }
+    }
+    return coors;
+  }
+
+  getSpacesAttacked() {
+    return this.spacesAttacked;
+  }
   getBoardDimensions() {
     return [this.WIDTH, this.HEIGHT];
   }
