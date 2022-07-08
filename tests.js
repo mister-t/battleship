@@ -64,11 +64,17 @@ describe('Battleship test suite:', () => {
       expect('error message of empty ship size', errMsg).toExist();
     }
 
+    const [ width, height ] = ai.getBoardDimensions();
     let shipInfo = ai.placeShip(SHIPS.DESTROYER);
     const { type, x1, x2, y1, y2 } = shipInfo;
     let testShipSize = x1 === x2 ? y2 - y1 : x2 - x1;
     expect(`a ${SHIPS.DESTROYER.name} of size`, SHIPS.DESTROYER.size).toEqual(testShipSize);
     expect(`the list of ships already placed to have a size of `, 1).toEqual(1);
+
+    expect(`the x1 coordinate '${x1}' of the ship to be between 1 and the board width of ${width}`, x1 >= 1 && x1 <= width).toEqual(true);
+    expect(`the y1 coordinate '${y1}' of the ship to be between 1 and the board height of ${height}`, y1 >= 1 && y1 <= height).toEqual(true);
+    expect(`the x2 coordinate '${x2}' of the ship to be between 1 and the board width of ${width}`, x2 >= 1 && x2<= width).toEqual(true);
+    expect(`the y2 coordinate '${y2}' of the ship to be between 1 and the board height of ${height}`, y2 >= 1 && y2 <= height).toEqual(true);
 
     shipInfo = ai.placeShip(SHIPS.CARRIER);
     const { type:carrierType, x1:carrierX1, x2:carrierX2, y1:carrierY1, y2:carrierY2 } = shipInfo;
