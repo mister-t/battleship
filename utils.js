@@ -23,6 +23,17 @@ const isOverlapped = ({x1, x2, y1, y2, shipsAlreadyPlaced}) => {
   return false;
 };
 
+const isWithinBounds = (shipInfo, boardWidth, boardHeight) => {
+  // { type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}
+  if (!shipInfo) throw new Error('can not determine boundary conditions: shipInfo missing');
+  // console.log(shipInfo)
+  const { x1, x2, y1, y2 } = shipInfo;
+  if (x1 >= 1 && x2 >= 1 && x1 <= boardWidth && x2 <= boardWidth && y1 >= 1 && y2 >= 1 && y1 <= boardHeight && y2 <= boardHeight) {
+    return true;
+  }
+  return false;
+}
+
 const isOrientedProperly = ({x1, x2, y1, y2}) => {
   if (x1 === x2 && y1 <= y2) return true; //placed vertically
   if (y1 === y2 && x1 <= x2) return true; //placed horizontally
@@ -35,5 +46,6 @@ module.exports = {
   isVertical,
   isHorizontal,
   isOrientedProperly,
-  isSpaceTaken
+  isSpaceTaken,
+  isWithinBounds
 }

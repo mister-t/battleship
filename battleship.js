@@ -1,5 +1,5 @@
 const { INIT_HEIGHT, INIT_WIDTH } = require('./constants');
-const { getRandomValue, isVertical, isHorizontal, isOrientedProperly, isOverlapped, isSpaceTaken} = require('./utils');
+const { getRandomValue, isVertical, isHorizontal, isOrientedProperly, isOverlapped, isSpaceTaken, isWithinBounds} = require('./utils');
 
 module.exports = class AI {
   constructor(opts) {
@@ -11,17 +11,6 @@ module.exports = class AI {
     this.shipsAlreadyPlaced = []; //shipsAlreadyPlaced = [{ type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}]
     this.enemyShipsSunk = []; //enemyShipsSunnk = [{ type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}]
     this.spacesAttacked= []; // attackedSpaces = [{ x1: 3, y1: 4}]
-  }
-
-  isWithinBounds(shipInfo) {
-    // { type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}
-    if (!shipInfo) throw new Error('can not determine boundary conditions: shipInfo missing');
-    // console.log(shipInfo)
-    const { x1, x2, y1, y2 } = shipInfo;
-    if (x1 >= 1 && x2 >= 1 && x1 <= this.WIDTH && x2 <= this.WIDTH && y1 >= 1 && y2 >= 1 && y1 <= this.HEIGHT && y2 <= this.HEIGHT) {
-      return true;
-    }
-    return false;
   }
 
   placeShip({name, size}) {
@@ -43,7 +32,7 @@ module.exports = class AI {
         x2 = x1 + size;
       }
 
-      if (!this.isWithinBounds({x1, x2, y1, y2}) ||
+      if (!isWithinBounds({x1, x2, y1, y2}, this.WIDTH, this.HEIGHT) ||
           !isOrientedProperly({x1, x2, y1, y2}) ||
           isOverlapped({x1, x2, y1, y2, shipsAlreadyPlaced: this.shipsAlreadyPlaced})) { 
         x1 = getRandomValue(this.WIDTH);
