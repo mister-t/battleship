@@ -1,6 +1,9 @@
 const { SHIPS } = require('./constants');
 const AI = require("./battleship");
 
+const showGreenMsg = log => console.log("\u001b[32m" + log + "\u001b[0m");
+const showRedMsg = log => console.log("\u001b[31m" + log + "\u001b[0m");
+
 function describe(msg, cb) {
   console.log(`${msg}`);
   cb();
@@ -15,18 +18,23 @@ function expect(msg, lhs) {
   return {
     toEqual: (rhs) => {
       if (lhs === rhs) {
-        console.log(`\t\texpect ${msg} '${lhs}' to equal '${rhs}': ${lhs === rhs}`)
+        const log = `\t\texpect ${msg} '${lhs}' to equal '${rhs}': ${lhs === rhs}`;
+        showGreenMsg(log);
       } else {
         const errMsg = `${msg} '${lhs}' IS NOT EQUAL to ${rhs}`;
-        throw new Error(errMsg);
+        showRedMsg(errMsg);
+        // throw new Error(errMsg);
       }
     },
     toExist: () => {
       if (lhs) {
-        console.log(`\t\texpect ${msg} '${typeof lhs === 'object' ? JSON.stringify(lhs) : lhs}' TO EXIST`)
+        const log = `\t\texpect ${msg} '${typeof lhs === 'object' ? JSON.stringify(lhs) : lhs}' TO EXIST`;
+        // console.log("%c" + log, "color:green")
+        showGreenMsg(log);
       } else {
         const errMsg = `\t\texpect ${msg} '${lhs}' TO EXIST but found none`;
-        throw new Error(errMsg);
+        showRedMsg(errMsg);
+        // throw new Error(errMsg);
       }
     }
   }
@@ -58,8 +66,8 @@ describe('Battleship test suite:', () => {
     let shipInfo = ai.placeShip(SHIPS.DESTROYER);
     const { type, x1, x2, y1, y2 } = shipInfo;
     let testShipSize = x1 === x2 ? y2 - y1 : x2 - x1;
-    expect(`a ${SHIPS.DESTROYER.name} of size `, SHIPS.DESTROYER.size).toEqual(testShipSize);
-    expect(`a ship of size ${SHIPS.DESTROYER.size} to be placed on the board`, shipInfo).toExist();
+    expect(`a ${SHIPS.DESTROYER.name} of size`, SHIPS.DESTROYER.size).toEqual(testShipSize);
+    expect(`a ship of size ${SHIPS.DESTROYER.size} to be placed on the board`, 2).toExist();
     expect(`the list of ships already placed to have a size of `, 1).toEqual(1);
 
     shipInfo = ai.placeShip(SHIPS.CARRIER);
