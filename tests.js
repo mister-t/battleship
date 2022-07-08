@@ -56,12 +56,18 @@ describe('Battleship test suite:', () => {
     }
 
     let shipInfo = ai.placeShip(SHIPS.DESTROYER);
+    const { type, x1, x2, y1, y2 } = shipInfo;
+    let testShipSize = x1 === x2 ? y2 - y1 : x2 - x1;
+    expect(`a ${SHIPS.DESTROYER.name} of size `, SHIPS.DESTROYER.size).toEqual(testShipSize);
     expect(`a ship of size ${SHIPS.DESTROYER.size} to be placed on the board`, shipInfo).toExist();
     expect(`the list of ships already placed to have a size of `, 1).toEqual(1);
 
     shipInfo = ai.placeShip(SHIPS.CARRIER);
-    expect(`a ship of size ${SHIPS.CARRIER.size} to be placed on the board`, shipInfo).toExist();
-    expect(`the list of ships already placed to have a size of `, 2).toEqual(2);
+    const { type:carrierType, x1:carrierX1, x2:carrierX2, y1:carrierY1, y2:carrierY2 } = shipInfo;
+    expect(`a ship of size ${SHIPS.CARRIER.size} to be placed on the board`, carrierType).toExist();
+    expect(`the list of ships already placed to have a size of`, 2).toEqual(2);
+    testShipSize = carrierX1 === carrierX2 ? carrierY2 - carrierY1 : carrierX2 - carrierX1;
+    expect(`a ${SHIPS.CARRIER.name} of size`, SHIPS.CARRIER.size).toEqual(testShipSize);
   });
 
     // expect('a new ship should not overlap a ship already placed on the board:', () => {

@@ -2,6 +2,9 @@ const { INIT_HEIGHT, INIT_WIDTH, SHIPS } = require('./constants');
 
 const getRandomValue = (maxNum) => Math.floor(Math.random() * maxNum); //0 - 9
 
+const isVertical = (x1, x2) => x1 === x2;
+const isHorizontal = (y1, y2) => y1 === y2;
+
 const isOrientedProperly = ({x1, x2, y1, y2}) => {
   if (x1 === x2 && y1 <= y2) return true; //placed vertically
   if (y1 === y2 && x1 <= x2) return true; //placed horizontally
@@ -35,19 +38,26 @@ module.exports = class AI {
     return false;
   }
 
-  placeShip(shipType) {
-    if (!shipType) throw new Error('Unable to place ship: size not specified')
+  placeShip({name, size}) {
+    if (!size || !name) throw new Error('Unable to place ship: size not specified')
     let areValidCoors = false;
     let coordinates = null;
 
     while(!areValidCoors) {
-      const x1 = getRandomValue(this.WIDTH);
-      const x2 = getRandomValue(this.WIDTH);
-      const y1 = getRandomValue(this.HEIGHT);
-      const y2 = getRandomValue(this.HEIGHT);
+      let x1 = getRandomValue(this.WIDTH);
+      let x2 = getRandomValue(this.WIDTH);
+      let y1 = getRandomValue(this.HEIGHT);
+      let y2 = getRandomValue(this.HEIGHT);
+
+      if (isVertical(x1, x2)) {
+        y2 = y1 + size;
+      }
+      else if (isHorizontal(y1, y2)) {
+        x2 = x1 + size;
+      }
 
       if (this.isWithinBounds({x1, x2, y1, y2}) && isOrientedProperly({x1, x2, y1, y2})) {
-        coordinates = {type: shipType.name, x1, y1, x2, y2};
+        coordinates = {type: name, x1, y1, x2, y2};
         this.shipsAlreadyPlaced.push(coordinates);
         areValidCoors = true;
       }
