@@ -100,7 +100,12 @@ describe('Battleship test suite:', () => {
     ai.recordPlaceAttacked(ai.placeBomb());
 
     const { x:x2, y:y2 } = ai.placeBomb();
-    console.log(ai.getSpacesAttacked())
-    expect(`the x, y coordinates of '${x2}, ${y2}' to not be attacked already`, !isSpaceTaken({x2, y2}, ai.getSpacesAttacked())).toEqual(true);
+    console.log(ai.getSpacesAttacked());
+    expect(`the x, y coordinates of '${x2}, ${y2}' to not be attacked already`, !isSpaceTaken({x:x2, y:y2}, ai.getSpacesAttacked())).toEqual(true);
+
+    const { x:x3, y:y3 } = ai.bomb();
+    const placesAttacked = ai.getSpacesAttacked(); 
+    console.log(placesAttacked)
+    expect(`the x, y coordinates of '${x3}, ${y3}' to be recorded after the bomb has been placed`, isSpaceTaken({x:x3, y:y3}, placesAttacked)).toEqual(true);
   });
 });

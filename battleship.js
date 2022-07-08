@@ -86,6 +86,12 @@ module.exports = class AI {
     return coors;
   }
 
+  bomb() {
+    const coors = this.placeBomb();
+    this.recordPlaceAttacked(coors);
+    return coors;
+  }
+
   getSpacesAttacked() {
     return this.spacesAttacked;
   }
