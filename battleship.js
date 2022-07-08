@@ -40,7 +40,7 @@ module.exports = class AI {
     return  {type: name, x1, x2, y1, y2};
   }
 
-  ship({name, size}) {
+  createShip({name, size}) {
     let shipInfo = this.placeShip({name, size});
     this.recordShipsPlaced(shipInfo)
     return shipInfo

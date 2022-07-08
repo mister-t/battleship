@@ -65,7 +65,7 @@ describe('Battleship test suite:', () => {
     }
 
     const [ width, height ] = ai.getBoardDimensions();
-    let shipInfo = ai.ship(SHIPS.DESTROYER);
+    let shipInfo = ai.createShip(SHIPS.DESTROYER);
     const { type, x1, x2, y1, y2 } = shipInfo;
     let testShipSize = isVertical(x1, x2) ? y2 - y1 : x2 - x1;
     console.log('destroyer ship info: ', shipInfo)
@@ -77,7 +77,7 @@ describe('Battleship test suite:', () => {
     expect(`the x2 coordinate '${x2}' of the ship to be between 1 and the board width of ${width}`, x2 >= 1 && x2<= width).toEqual(true);
     expect(`the y2 coordinate '${y2}' of the ship to be between 1 and the board height of ${height}`, y2 >= 1 && y2 <= height).toEqual(true);
 
-    shipInfo = ai.ship(SHIPS.CARRIER);
+    shipInfo = ai.createShip(SHIPS.CARRIER);
     const { type:carrierType, x1:carrierX1, x2:carrierX2, y1:carrierY1, y2:carrierY2 } = shipInfo;
     testShipSize = carrierX1 === carrierX2 ? carrierY2 - carrierY1 : carrierX2 - carrierX1;
     const numShips = ai.getNumShipsPlaced();
