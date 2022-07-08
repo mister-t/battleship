@@ -68,7 +68,7 @@ describe('Battleship test suite:', () => {
     let shipInfo = ai.createShip(SHIPS.DESTROYER);
     const { type, x1, x2, y1, y2 } = shipInfo;
     let testShipSize = isVertical(x1, x2) ? y2 - y1 : x2 - x1;
-    console.log('destroyer ship info: ', shipInfo)
+    // console.log('destroyer ship info: ', shipInfo)
     expect(`a ${SHIPS.DESTROYER.name} of size`, SHIPS.DESTROYER.size).toEqual(testShipSize);
     expect(`the list of ships already placed to have a size of `, 1).toEqual(1);
 
@@ -92,6 +92,10 @@ describe('Battleship test suite:', () => {
     const { type:submarineType, x1:submarineX1, x2:submarineX2, y1:submarineY1, y2:submarineY2 } = shipInfo;
 
     expect(`a ship of type '${submarineType}' (with coordinates 'X1=${submarineX1}','X2=${submarineX2}','Y1=${submarineY1}','Y2=${submarineY2}') to not overlap other ships already on the board`, !isOverlapped({x1: submarineX1, x2: submarineX2, y1: submarineY1, y2: submarineY1, shipsAlreadyPlaced}) ).toEqual(true);
+
+    //Uncomment below to manually verify correctness of the ships created
+    // ai.recordShipsPlaced(shipInfo); //saving the submarine info so that we can display all the ships created so far
+    // console.log(`\t\tShips created:\n \t\t${JSON.stringify(ai.getShipsAlreadyPlaced())}`)
   });
 
   test('placing the next bomb:', () => {
