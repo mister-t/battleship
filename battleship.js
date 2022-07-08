@@ -3,8 +3,8 @@ const { INIT_HEIGHT, INIT_WIDTH, SHIPS } = require('./constants');
 const getRandomValue = (maxNum) => Math.floor(Math.random() * maxNum); //0 - 9
 
 const isOrientedProperly = ({x1, x2, y1, y2}) => {
-  if (x1 === x2) return true; //placed vertically
-  if (y1 === y2) return true; //placed horizontally
+  if (x1 === x2 && y1 <= y2) return true; //placed vertically
+  if (y1 === y2 && x1 <= x2) return true; //placed horizontally
   return false;
 }
 
@@ -46,8 +46,6 @@ module.exports = class AI {
       const y1 = getRandomValue(this.HEIGHT);
       const y2 = getRandomValue(this.HEIGHT);
 
-      //1. place a ship
-      //2. place a ship within the board
       if (this.isWithinBounds({x1, x2, y1, y2}) && isOrientedProperly({x1, x2, y1, y2})) {
         coordinates = {type: shipType.name, x1, y1, x2, y2};
         this.shipsAlreadyPlaced.push(coordinates);
@@ -56,10 +54,8 @@ module.exports = class AI {
 
       if (areValidCoors) return coordinates;
     }
-    
     return null;
     //3. place a ship within the board that does not overlap with existing ships
-    //4. place a ship within the board randomly and that does not overlap with existing ships
   }
 
   bombNextLocation({}) {
