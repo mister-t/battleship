@@ -3,10 +3,10 @@ module.exports = {
   INIT_HEIGHT : 10,
 
   SHIPS : {
-    DESTROYER : 2,
-    SUBMARINE : 3,
-    CRUISER : 3,
-    BATTLESHIP : 4,
-    CARRIER : 5
-  }
+    DESTROYER : { name: 'destroyer', size: 2},
+    SUBMARINE : { name: 'submarine', size: 3},
+    CRUISER : { name: 'cruiser', size: 3},
+    BATTLESHIP : { name: 'battleship', size: 4},
+    CARRIER : { name: 'carrier', size: 5}
+  },
 };

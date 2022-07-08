@@ -1,23 +1,6 @@
 const { INIT_HEIGHT, INIT_WIDTH, SHIPS } = require('./constants');
-// const INIT_WIDTH = 10;
-// const INIT_HEIGHT = 10;
 
-// const SHIPS = {
-//   DESTROYER : 2,
-//   SUBMARINE : 3,
-//   CRUISER : 3,
-//   BATTLESHIP : 4,
-//   CARRIER : 5
-// };
-
-
-const getRandomValue = (maxNum) => Math.floor(Math.random() * maxNum);
-
-const isWithinBounds = (shipInfo) => {
-  // { type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}
-  if (!shipInfo) throw new Error('can not determine boundary conditions: shipInfo missing');
-
-};
+const getRandomValue = (maxNum) => Math.floor(Math.random() * maxNum); //0 - 9
 
 const isOverlapped = (shipInfo) => {
   // { type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}
@@ -35,6 +18,17 @@ module.exports = class AI {
     this.spacesAttacked= []; // attackedSpaces = [{ x1: 3, y1: 4}]
   }
 
+  isWithinBounds(shipInfo) {
+    // { type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}
+    if (!shipInfo) throw new Error('can not determine boundary conditions: shipInfo missing');
+    // console.log(shipInfo)
+    const { x1, x2, y1, y2, type } = shipInfo;
+    if (x1 >= 0 && x2 >= 0 && x1 <= this.WIDTH && x2 <= this.WIDTH && y1 >= 0 && y2 >= 0 && y1 <= this.HEIGHT && y2 <= this.HEIGHT) {
+      return true;
+    }
+    return false;
+  }
+
   placeShip(shipType) {
     if (!shipType) throw new Error('Unable to place ship: size not specified')
 
@@ -42,10 +36,13 @@ module.exports = class AI {
     const x2 = getRandomValue(this.WIDTH);
     const y1 = getRandomValue(this.HEIGHT);
     const y2 = getRandomValue(this.HEIGHT);
-
-    return {type: shipType, x1, y1, x2, y2}
+    
     //1. place a ship
     //2. place a ship within the board
+    if (this.isWithinBounds({x1, x2, y1, y2})) {
+      return {type: shipType.name, x1, y1, x2, y2}
+    }
+    return null;
     //3. place a ship within the board that does not overlap with existing ships
     //4. place a ship within the board randomly and that does not overlap with existing ships
 

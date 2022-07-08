@@ -23,9 +23,9 @@ function expect(msg, lhs) {
     },
     toExist: () => {
       if (lhs) {
-        console.log(`\t\texpect ${msg} '${lhs}' TO EXIST`)
+        console.log(`\t\texpect ${msg} '${typeof lhs === 'object' ? JSON.stringify(lhs) : lhs}' TO EXIST`)
       } else {
-        const errMsg = `\t\texpect ${msg} '${lhs}' TO NOT EXIST`;
+        const errMsg = `\t\texpect ${msg} '${lhs}' TO EXIST but found none`;
         throw new Error(errMsg);
       }
     }
@@ -56,7 +56,7 @@ describe('Battleship test suite:', () => {
     }
 
     const shipInfo = ai.placeShip(SHIPS.DESTROYER);
-    expect('a ship of size 2 to be placed on the board', shipInfo).toExist();
+    expect(`a ship of size ${SHIPS.DESTROYER.size} to be placed on the board`, shipInfo).toExist();
   });
 
     // expect('a new ship to be within the board dimensions:', () => {
