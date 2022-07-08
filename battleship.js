@@ -2,6 +2,12 @@ const { INIT_HEIGHT, INIT_WIDTH, SHIPS } = require('./constants');
 
 const getRandomValue = (maxNum) => Math.floor(Math.random() * maxNum); //0 - 9
 
+const isOrientedProperly = ({x1, x2, y1, y2}) => {
+  if (x1 === x2) return true; //placed vertically
+  if (y1 === y2) return true; //placed horizontally
+  return false;
+}
+
 const isOverlapped = (shipInfo) => {
   // { type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}
 };
@@ -31,28 +37,29 @@ module.exports = class AI {
 
   placeShip(shipType) {
     if (!shipType) throw new Error('Unable to place ship: size not specified')
+    let areValidCoors = false;
+    let coordinates = null;
 
-    const x1 = getRandomValue(this.WIDTH);
-    const x2 = getRandomValue(this.WIDTH);
-    const y1 = getRandomValue(this.HEIGHT);
-    const y2 = getRandomValue(this.HEIGHT);
-    
-    //1. place a ship
-    //2. place a ship within the board
-    if (this.isWithinBounds({x1, x2, y1, y2})) {
-        this.shipsAlreadyPlaced.push({type: shipType.name, x1, y1, x2, y2});
-      return {type: shipType.name, x1, y1, x2, y2};
+    while(!areValidCoors) {
+      const x1 = getRandomValue(this.WIDTH);
+      const x2 = getRandomValue(this.WIDTH);
+      const y1 = getRandomValue(this.HEIGHT);
+      const y2 = getRandomValue(this.HEIGHT);
+
+      //1. place a ship
+      //2. place a ship within the board
+      if (this.isWithinBounds({x1, x2, y1, y2}) && isOrientedProperly({x1, x2, y1, y2})) {
+        coordinates = {type: shipType.name, x1, y1, x2, y2};
+        this.shipsAlreadyPlaced.push(coordinates);
+        areValidCoors = true;
+      }
+
+      if (areValidCoors) return coordinates;
     }
+    
     return null;
     //3. place a ship within the board that does not overlap with existing ships
     //4. place a ship within the board randomly and that does not overlap with existing ships
-
-    //destroyer - 2
-    //submarine - 3
-    //cruiser - 3
-    //battleship - 4
-    //carrier - 5
-    //Need to have randomness on the placement
   }
 
   bombNextLocation({}) {

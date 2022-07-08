@@ -55,16 +55,14 @@ describe('Battleship test suite:', () => {
       expect('error message of empty ship size', errMsg).toExist();
     }
 
-    const shipInfo = ai.placeShip(SHIPS.DESTROYER);
+    let shipInfo = ai.placeShip(SHIPS.DESTROYER);
     expect(`a ship of size ${SHIPS.DESTROYER.size} to be placed on the board`, shipInfo).toExist();
-    expect(`the list of ships already to have a size of `, 1).toEqual(1);
-    expect(`a ship of size ${SHIPS.CARRIER.size} to be placed on the board`, shipInfo).toExist();
-    expect(`the list of ships already to have a size of `, 2).toEqual(2);
-  });
+    expect(`the list of ships already placed to have a size of `, 1).toEqual(1);
 
-    // expect('a new ship to be within the board dimensions:', () => {
-    //   ai.placeShip(2);
-    // });
+    shipInfo = ai.placeShip(SHIPS.CARRIER);
+    expect(`a ship of size ${SHIPS.CARRIER.size} to be placed on the board`, shipInfo).toExist();
+    expect(`the list of ships already placed to have a size of `, 2).toEqual(2);
+  });
 
     // expect('a new ship should not overlap a ship already placed on the board:', () => {
 
