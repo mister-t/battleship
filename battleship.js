@@ -41,17 +41,15 @@ module.exports = class AI {
       }
       else if (isHorizontal(y1, y2)) {
         x2 = x1 + size;
-      } else {
+      }
+
+      if (!this.isWithinBounds({x1, x2, y1, y2}) ||
+          !isOrientedProperly({x1, x2, y1, y2}) ||
+          isOverlapped({x1, x2, y1, y2, shipsAlreadyPlaced: this.shipsAlreadyPlaced})) { 
         x1 = getRandomValue(this.WIDTH);
         x2 = getRandomValue(this.WIDTH);
         y1 = getRandomValue(this.HEIGHT);
         y2 = getRandomValue(this.HEIGHT);
-        continue;
-      }
-
-      if (!this.isWithinBounds({x1, x2, y1, y2}) && 
-          !isOrientedProperly({x1, x2, y1, y2}) && 
-          isOverlapped({x1, x2, y1, y2, shipsAlreadyPlaced: this.shipsAlreadyPlaced})) { 
       } else {
         areValidCoors = true;
       }
