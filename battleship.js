@@ -14,7 +14,7 @@ module.exports = class AI {
     this.HEIGHT = height || INIT_HEIGHT;
 
     this.shipsAlreadyPlaced = []; //shipsAlreadyPlaced = [{ type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}]
-    this.enemyShipsSunk = []; //shipsAlreadyPlaced = [{ type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}]
+    this.enemyShipsSunk = []; //enemyShipsSunnk = [{ type: 'cruiser', x1: 3, y1: 4, x2: 3, y2: 6}]
     this.spacesAttacked= []; // attackedSpaces = [{ x1: 3, y1: 4}]
   }
 
@@ -40,7 +40,8 @@ module.exports = class AI {
     //1. place a ship
     //2. place a ship within the board
     if (this.isWithinBounds({x1, x2, y1, y2})) {
-      return {type: shipType.name, x1, y1, x2, y2}
+        this.shipsAlreadyPlaced.push({type: shipType.name, x1, y1, x2, y2});
+      return {type: shipType.name, x1, y1, x2, y2};
     }
     return null;
     //3. place a ship within the board that does not overlap with existing ships
