@@ -55,6 +55,18 @@ const areBadCoors = ({x1, x2, y1, y2, WIDTH, HEIGHT, shipsAlreadyPlaced}) => {
       isOverlapped({x1, x2, y1, y2, shipsAlreadyPlaced});
 };
 
+const scaleShipToSize = ({x1, x2, y1, y2, size}) => {
+  //constrict the size of the ship to that of the ship type
+  if (isVertical(x1, x2)) {
+    y2 = y1 + size;
+  }
+  else if (isHorizontal(y1, y2)) {
+    x2 = x1 + size;
+  }
+
+  return {x1, x2, y1, y2, size};
+}
+
 module.exports = {
   getRandomValue,
   getNewShipCoors,
@@ -64,5 +76,6 @@ module.exports = {
   isOrientedProperly,
   isSpaceTaken,
   isWithinBounds,
-  areBadCoors 
+  areBadCoors,
+  scaleShipToSize
 }

@@ -1,5 +1,5 @@
 const { INIT_HEIGHT, INIT_WIDTH } = require('./constants');
-const { getRandomValue, isVertical, isHorizontal, isOrientedProperly, isOverlapped, isSpaceTaken, getNewShipCoors, areBadCoors } = require('./utils');
+const { getRandomValue, isSpaceTaken, getNewShipCoors, areBadCoors, scaleShipToSize } = require('./utils');
 
 module.exports = class AI {
   constructor(opts) {
@@ -17,18 +17,15 @@ module.exports = class AI {
     if (!size || !name) throw new Error('Unable to place ship: name or size not specified')
 
     let areValidCoors = false;
-    const shipsAlreadyPlaced = this.getShipsAlreadyPlaced();
-    const { WIDTH, HEIGHT } = this;
+    const { WIDTH, HEIGHT, shipsAlreadyPlaced } = this;
     let { x1, x2, y1, y2 } = getNewShipCoors({WIDTH, HEIGHT});
 
     while(!areValidCoors) {
-      //constrict the size of the ship to that of the ship type
-      if (isVertical(x1, x2)) {
-        y2 = y1 + size;
-      }
-      else if (isHorizontal(y1, y2)) {
-        x2 = x1 + size;
-      }
+      const scaledShip = scaleShipToSize({x1, x2, y1, y2, size});
+      x1 = scaledShip.x1;
+      x2 = scaledShip.x2;
+      y1 = scaledShip.y1;
+      y2 = scaledShip.y2;
 
       if (areBadCoors({x1, x2, y1, y2, WIDTH, HEIGHT, shipsAlreadyPlaced})) {
         let newCoors = getNewShipCoors({WIDTH, HEIGHT});
@@ -48,7 +45,7 @@ module.exports = class AI {
     this.recordShipsPlaced(shipInfo)
     return shipInfo
   }
- 
+
   recordShipsPlaced(shipInfo) {
     const {type, x1, x2, y1, y2} = shipInfo;
     if (!x1 || !x2 || !y1 || !y2 || !type) throw new Error('Unable to record new ship coordinates: missing x or y coordinates or ship type');
