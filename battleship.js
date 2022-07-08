@@ -56,8 +56,20 @@ module.exports = class AI {
     return null;
   }
 
-  bombNextLocation({}) {
-    //Need to have randomness on the bomb location
+  bombNextLocation() {
+    let areValidCoors = false;
+    let coordinates = null;
+
+    while(!areValidCoors) {
+      let x = getRandomValue(this.WIDTH);
+      let y = getRandomValue(this.HEIGHT);
+
+      if (x >= 1 && x <= this.WIDTH && y >= 1 && y <= this.HEIGHT) {
+        coordinates = { x, y};
+        areValidCoors = true;
+      }
+      if (areValidCoors) return coordinates;
+    }
   }
 
   getBoardDimensions() {

@@ -1,5 +1,6 @@
 const { SHIPS } = require('./constants');
 const AI = require('./battleship');
+const { isOverlapped } = require('./utils');
 
 const showGreenMsg = log => console.log("\u001b[32m" + log + "\u001b[0m");
 const showRedMsg = log => console.log("\u001b[31m" + log + "\u001b[0m");
@@ -76,9 +77,19 @@ describe('Battleship test suite:', () => {
     expect(`a ship of type ${carrierType} to be placed on the board`, carrierType ? ' ' : false).toExist();
     expect(`a ${SHIPS.CARRIER.name} of size`, SHIPS.CARRIER.size).toEqual(testShipSize);
     expect(`the list of ships already placed to have a size of`, numShips).toEqual(2);
+
+    // expect('ships to not overlap a ship already placed on the board:', () => {
+
+    // });
   });
 
-    expect('a new ship should not overlap a ship already placed on the board:', () => {
+  test('placing the next bomb:', () => {
+    const ai = new AI();
+    let bombInfo = ai.bombNextLocation();
+    const [ width, height ] = ai.getBoardDimensions();
+    const { x, y } = bombInfo;
 
-    });
+    expect(`the x coordinate '${x}' of the bomb to be between 1 and the board width`, x >= 1 && x <= width).toEqual(true);
+    expect(`the y coordinate '${y}' of the bomb to be between 1 and the board width`, y >= 1 && y <= height).toEqual(true);
+  });
 });

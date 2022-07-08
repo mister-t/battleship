@@ -1,4 +1,4 @@
-const getRandomValue = (maxNum) => Math.floor(Math.random() * maxNum); //0 - 9
+const getRandomValue = (maxNum) => Math.floor(Math.random() * maxNum + 1); //1 - 10 on a 10X10 board
 
 const isVertical = (x1, x2) => x1 === x2;
 const isHorizontal = (y1, y2) => y1 === y2;
